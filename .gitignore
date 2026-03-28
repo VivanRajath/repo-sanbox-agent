@@ -1,0 +1,25 @@
+# Python Virtual Environment
+venv/
+env/
+.venv/
+
+# Environment Variables
+.env
+.env.local
+
+# Python Cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Testing & Sandbox Directories
+sandbox-test/
+runtime_report.md
+bug_report.md
+*.log
+
+# Memory Cache (Optional - remove if you want memory persisting in Git)
+# memory/MEMORY.md
+
+open-agent-registry

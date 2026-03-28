@@ -1,0 +1,31 @@
+name: scan-repo
+description: Scan a repo and return structured runtime JSON.
+version: 1.0.0
+
+trigger:
+  type: user_message
+  pattern: "scan|detect|what runtime|how to run"
+
+steps:
+  - id: detect
+    agent: repo-scanner
+    skill: detect-runtime
+    input:
+      repo_path: "{{user.repo_path}}"
+    output: scan_result
+
+  - id: store_memory
+    type: memory_write
+    path: memory/MEMORY.md
+    content: |
+      ## {{timestamp}}
+      repo: {{user.repo_path}}
+      runtime: {{scan_result.runtime}}
+      framework: {{scan_result.framework}}
+      entry: {{scan_result.entry}}
+      run_cmd: {{scan_result.run_cmd}}
+      port: {{scan_result.port}}
+
+  - id: respond
+    type: respond
+    message: "{{scan_result}}"

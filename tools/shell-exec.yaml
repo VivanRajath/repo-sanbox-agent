@@ -1,0 +1,13 @@
+name: shell-exec
+description: Execute a shell command. Used for directory listing and detect.sh.
+input_schema:
+  type: object
+  required: [command]
+  properties:
+    command:
+      type: string
+      description: The shell command to execute
+    cwd:
+      type: string
+      description: Working directory
+      default: "."

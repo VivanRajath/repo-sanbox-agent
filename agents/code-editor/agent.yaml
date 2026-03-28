@@ -1,0 +1,14 @@
+spec_version: "0.1.0"
+name: code-editor
+version: 1.0.0
+description: >
+  Applies natural language edit instructions to files in a repo.
+  Read → diff → confirm → write.
+
+model:
+  preferred: "anthropic:claude-sonnet-4-5-20250514"
+  fallback: ["openai:gpt-4o"]
+
+tools: [file-read, file-write]
+
+skills: [apply-edit]

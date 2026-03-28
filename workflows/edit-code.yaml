@@ -1,0 +1,27 @@
+name: edit-code
+description: Apply a natural language edit to a file in the repo.
+version: 1.0.0
+
+trigger:
+  type: user_message
+  pattern: "change|edit|add|remove|update|fix|rename|make"
+
+steps:
+  - id: load_context
+    type: memory_read
+    path: memory/MEMORY.md
+    output: repo_context
+
+  - id: edit
+    agent: code-editor
+    skill: apply-edit
+    input:
+      instruction: "{{user.message}}"
+      repo_path: "{{repo_context.repo}}"
+      runtime: "{{repo_context.runtime}}"
+      framework: "{{repo_context.framework}}"
+    output: edit_result
+
+  - id: respond
+    type: respond
+    message: "{{edit_result}}"

@@ -1,0 +1,14 @@
+spec_version: "0.1.0"
+name: repo-scanner
+version: 1.0.0
+description: >
+  Scans a repo root, detects runtime, entry point, and run command.
+  Outputs structured JSON for the host environment to consume.
+
+model:
+  preferred: "anthropic:claude-sonnet-4-5-20250514"
+  fallback: ["openai:gpt-4o"]
+
+tools: [file-read, shell-exec]
+
+skills: [detect-runtime]

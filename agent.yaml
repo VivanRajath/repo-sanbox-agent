@@ -1,0 +1,18 @@
+spec_version: "0.1.0"
+name: repo-sandbox-agent
+version: 1.0.0
+description: >
+  Multi-agent system that scans any Git repository to detect its
+  runtime and run instructions, then assigns natural language code
+  edits to tiered autonomous editors (Jnr, Mid, Snr) to manage LLM costs.
+
+model:
+  preferred: "anthropic:claude-sonnet-4-5-20250514"
+  fallback: ["openai:gpt-4o", "google:gemini-2.0-flash"]
+
+tools: [file-read, file-write, shell-exec]
+
+skills: [detect-runtime, route-intent, apply-edit]
+
+delegation:
+  mode: auto
