@@ -1,56 +1,69 @@
 # Lyzr GitAgent Orchestrator
 
-This repository is a multi-agent workspace built natively on the **GitAgent Standard** and orchestrated by the **Lyzr ADK**. It transforms standard Git repositories into intelligent, multi-agent tools capable of analyzing architecture, resolving bugs, and natively executing Git lifecycles.
+## Overview
+This repository introduces a sophisticated, multi-tiered autonomous AI worker built entirely around the open GitAgent Standard and driven by the Lyzr ADK. It functions as an intelligent software developer capable of cloning a repository, analyzing its architecture, fixing bugs, and pushing the code back to source control.
 
-##  What is GitAgent?
-[GitAgent](https://github.com/open-gitagent/gitagent) is an open standard that fundamentally re-imagines how AI agents are defined and deployed. Instead of locking agent logic inside proprietary platforms or complex Python codebases, GitAgent stores an agent's entire brain, ruleset, and memory natively inside standard Git repositories using plain text files. 
+Unlike static scripts, this agent actively reasons about your codebase. It reads your project structure, determines the best approach to implement features or fix bugs, leverages the appropriate compute resources based on task complexity, and executes natively using system level tools. 
 
-### Core Specifications
-GitAgent relies on three primary pillars situated at the root of a project:
-1. **`agent.yaml`**: The technical configuration. It defines the agent's name, description, assigned tools (e.g., `file-read`, `shell-exec`), and sub-agents.
-2. **`SOUL.md`**: The agent's identity and system prompt. It dictates behavioral guidelines, constraints (What the agent should NEVER do), and formatting rules.
-3. **`SKILL.md` (Optional)**: Specific instructional workflows teaching the agent how to accomplish complex repeatable tasks step-by-step.
-4. **`memory/`**: A persistent markdown directory where agents dump contextual state so they can pick up exactly where they left off across different sessions.
+This project was developed for the Lyzr GitAgent Challenge.
 
-##  Gitagent Versatility
-By adopting the GitAgent standard, we were able to completely decouple our agent's **behavior** from our agent's **execution engine**. 
+## Comprehensive Capabilities
 
-Specifically:
-- **Hierarchical Design:** We easily defined a multi-agent system (`code-editor` and `repo-scanner`) inside nested `agents/` directories simply by dropping new `agent.yaml` files.
-- **Portability:** Because our system prompt and constraints live in `SOUL.md`, we didn't have to write giant LLM chains in Python. The Lyzr ADK runner simply reads the markdown files and dynamically initializes the agent.
-- **Standardized Memory:** Our scanning tool natively appends JSON repository structural data to `memory/MEMORY.md`. The code-editing agent then reads that standard file to understand the environment without having to re-scan. 
+### 1. Architectural Comprehension
+* **Deep Repository Scanning**: Automatically interrogates target directories to ascertain the core runtime, identify standard frameworks, locate primary entry points, and deduce required environment variables.
+* **Persistent Contextual Memory**: Maintains persistent state by dynamically appending structured JSON data to a standard memory directory. This caching strategy allows subsequent agent sessions to pick up seamlessly where prior sessions left off.
 
-## 🛠 Lyzr ADK Integration Tools
-The `lyzr_runner.py` hooks the Lyzr `gpt-4o` agent directly into your machine using physical Python tools that execute the GitAgent specs:
-* `scan_repo(url)`: Extracts runtime environments (Python, Node, etc.).
-* `shell_exec(cmd)`: Subprocess tunneling allowing the agent to effectively run clones and compilations.
-* `read_file(path)` & `write_file(path, content)`: Allows the AI to physically save bug reports.
-* `get_env_var(name)` & `git_push(...)`: Natively automates authenticated Git pushes.
+### 2. Multi-Tiered Code Editing Strategy
+To balance high quality output with API operational costs, the orchestrator implements a unique hierarchical routing mechanism:
+* **Junior Tier**: Handles localized bugs and superficial text changes. Operates strictly within a tightly scoped logical limit.
+* **Mid Tier**: Orchestrates feature additions that touch multiple files across a known module.
+* **Senior Tier**: Authorized to run broad shell level structure lookups to perform large scale architectural refactoring and deep systemic debugging.
 
-## 🚀 Setup & Execution
+### 3. Native File System and Shell Execution
+* **Direct File Manipulation**: Physically reads files to gain context and writes patches directly to your local workspace, eliminating theoretical code snippets entirely.
+* **Terminal Operations**: Equipped with a secure subprocess tunnel, the orchestrator can natively run compiler checks, clone repositories, and check directory states to validate its own work before declaring a task complete.
 
-### 1. Install Dependencies
+### 4. Git Lifecycle Automation
+* **Secret Management Guardrails**: Securely retrieves Personal Access Tokens (PATs) and environment variables without leaking them to the model outputs.
+* **Self-Contained Commit and Push**: Autonomously handles source control operations. The agent stages modified files, generates semantically accurate commit messages, builds the secure origin URL using the hidden PAT, and pushes the resolution straight to the active branch.
+
+## Technologies Utilized
+* **Lyzr ADK**: The execution engine running the Python context window, handling the tool bindings, and powering the underlying Large Language Model logic.
+* **GitAgent Standard**: The architectural foundation dictating the use of agent.yaml, SOUL.md, and structured SKILL.md files. This ensures the agent logic is fully decoupled, version controlled, and portable across platforms.
+
+## Setup Instructions
+
+### 1. Prerequisites
+Ensure you have Python 3.8 or higher installed on your system.
+
+### 2. Install Dependencies
+Install the required packages using pip:
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Configure Environment
-Create a `.env` file in the root directory:
+### 3. Configure Environment
+Create a .env file in the root directory and add your API keys:
 ```env
-LYZR_API_KEY=your-lyzr-or-openai-key
-GITHUB_PAT=your-github-personal-access-token
+LYZR_API_KEY=your_lyzr_or_openai_key
+GITHUB_PAT=your_github_personal_access_token
 ```
 
-### 3. Run the AI Developer
+### 4. Run the Agent
+Execute the main runner script to start the Lyzr ADK orchestrator loop:
 ```bash
 python lyzr_runner.py
 ```
 
-### 4. Example Prompts
-You can interact with the agent using natural language prompts. For example:
-> *"Scan the repo https://github.com/VivanRajath/sandbox-test, find its runtime, then use your file writing tool to save those details to runtime_report.md."*
+## Usage Examples
+Interact with the agent using natural language prompts in the terminal:
 
-> *"Please push the changes inside my sandbox-test folder to GitHub. Use the commit message 'Fixed logic in server.js'."*
+* "Scan the repo https://github.com/example/repo, find its runtime, then use your file writing tool to save those details to runtime_report.md."
+* "Ask Jnr Dev to clear out the bugs and generate the changes.md containing changed files."
+* "Ask MId Dev to implement the feature request and generate the changes.md containing changed files."
+* "Ask Snr Dev to refactor the codebase and generate the changes.md containing changed files."
+* "Please push the changes inside my folder to GitHub. Use the commit message 'Fixed logic'."
 
 ---
-*Built for the Lyzr GitAgent Challenge*
+*From Vivan Rajath*
+
