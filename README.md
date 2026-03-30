@@ -1,4 +1,4 @@
-# Lyzr GitAgent Orchestrator
+# Repo sandbox agent 
 
 ## Overview
 This repository introduces a sophisticated, multi-tiered autonomous AI worker built entirely around the open GitAgent Standard and driven by the Lyzr ADK. It functions as an intelligent software developer capable of cloning a repository, analyzing its architecture, fixing bugs, and pushing the code back to source control.
