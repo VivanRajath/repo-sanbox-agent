@@ -4,7 +4,9 @@ version: 1.0.0
 description: >
   Multi-agent system that scans any Git repository to detect its
   runtime and run instructions, then assigns natural language code
-  edits to tiered autonomous editors (Jnr, Mid, Snr) to manage LLM costs.
+  edits to tiered autonomous sub-agents (jnr-developer, snr-developer,
+  architect) to manage LLM costs. Follows the GitAgent standard with
+  recursive agent composition.
 
 model:
   preferred: "anthropic:claude-sonnet-4-5-20250514"
@@ -13,6 +15,21 @@ model:
 tools: [file-read, file-write, shell-exec]
 
 skills: [detect-runtime, route-intent, apply-edit]
+
+sub_agents:
+  - name: repo-scanner
+    path: agents/repo-scanner
+    description: >
+      Scan orchestrator. Delegates to framework-detector and
+      deep-scan-agent to produce structured JSON.
+    sub_agents: [framework-detector, deep-scan-agent]
+
+  - name: code-editor
+    path: agents/code-editor
+    description: >
+      Edit orchestrator. Delegates to jnr-developer, snr-developer,
+      or architect based on intent-router tier assignment.
+    sub_agents: [jnr-developer, snr-developer, architect]
 
 delegation:
   mode: auto

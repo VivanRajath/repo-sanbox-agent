@@ -1,0 +1,15 @@
+spec_version: "0.1.0"
+name: deep-scan-agent
+version: 1.0.0
+description: >
+  Deep scanner sub-agent. Traverses the full directory tree, analyzes
+  dependencies, discovers environment variables, and produces
+  architecture summaries. Uses shell access for thorough exploration.
+
+model:
+  preferred: "anthropic:claude-sonnet-4-5-20250514"
+  fallback: ["openai:gpt-4o"]
+
+tools: [file-read, shell-exec]
+
+skills: [detect-runtime]

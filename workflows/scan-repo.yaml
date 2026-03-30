@@ -7,11 +7,25 @@ trigger:
   pattern: "scan|detect|what runtime|how to run"
 
 steps:
-  - id: detect
-    agent: repo-scanner
+  - id: detect_framework
+    agent: repo-scanner/framework-detector
     skill: detect-runtime
     input:
       repo_path: "{{user.repo_path}}"
+    output: framework_result
+
+  - id: deep_scan
+    agent: repo-scanner/deep-scan-agent
+    skill: detect-runtime
+    input:
+      repo_path: "{{user.repo_path}}"
+    output: deep_scan_result
+
+  - id: assemble
+    type: merge
+    inputs:
+      - "{{framework_result}}"
+      - "{{deep_scan_result}}"
     output: scan_result
 
   - id: store_memory
@@ -25,6 +39,8 @@ steps:
       entry: {{scan_result.entry}}
       run_cmd: {{scan_result.run_cmd}}
       port: {{scan_result.port}}
+      file_structure: {{scan_result.file_structure}}
+      context_summary: {{scan_result.context_summary}}
 
   - id: respond
     type: respond

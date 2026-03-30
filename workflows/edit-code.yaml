@@ -12,6 +12,15 @@ steps:
     path: memory/MEMORY.md
     output: repo_context
 
+  - id: route_intent
+    agent: intent-router
+    skill: route-intent
+    input:
+      instruction: "{{user.message}}"
+      file_structure: "{{repo_context.file_structure}}"
+      context_summary: "{{repo_context.context_summary}}"
+    output: tier
+
   - id: edit
     agent: code-editor
     skill: apply-edit
@@ -20,6 +29,11 @@ steps:
       repo_path: "{{repo_context.repo}}"
       runtime: "{{repo_context.runtime}}"
       framework: "{{repo_context.framework}}"
+      tier: "{{tier}}"
+    delegates_to:
+      jnr: jnr-developer
+      snr: snr-developer
+      architect: architect
     output: edit_result
 
   - id: respond

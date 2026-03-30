@@ -1,0 +1,15 @@
+spec_version: "0.1.0"
+name: framework-detector
+version: 1.0.0
+description: >
+  Reads manifest files (package.json, requirements.txt, go.mod, etc.)
+  and detects runtime, framework, version, entry point, and commands.
+  Lightweight, fast detection using small models.
+
+model:
+  preferred: "google:gemini-2.0-flash"
+  fallback: ["openai:gpt-4o-mini"]
+
+tools: [file-read]
+
+skills: [detect-runtime]

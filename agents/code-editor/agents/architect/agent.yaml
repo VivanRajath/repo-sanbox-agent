@@ -1,0 +1,15 @@
+spec_version: "0.1.0"
+name: architect
+version: 1.0.0
+description: >
+  Architect sub-agent. Handles system-level architecture changes,
+  complex debugging, performance optimization, and deep codebase
+  exploration. Has shell access for full filesystem traversal.
+
+model:
+  preferred: "anthropic:claude-sonnet-4-5-20250514"
+  fallback: ["openai:gpt-4o"]
+
+tools: [file-read, file-write, shell-exec]
+
+skills: [apply-edit]

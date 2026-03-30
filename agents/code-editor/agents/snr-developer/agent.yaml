@@ -1,0 +1,15 @@
+spec_version: "0.1.0"
+name: snr-developer
+version: 1.0.0
+description: >
+  Senior developer sub-agent. Handles multi-file feature additions,
+  component creation, refactors, route setup, and integration tasks.
+  Uses standard-tier models for balanced cost and capability.
+
+model:
+  preferred: "anthropic:claude-sonnet-4-5-20250514"
+  fallback: ["openai:gpt-4o"]
+
+tools: [file-read, file-write]
+
+skills: [apply-edit]

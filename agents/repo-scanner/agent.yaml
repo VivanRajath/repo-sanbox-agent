@@ -2,8 +2,9 @@ spec_version: "0.1.0"
 name: repo-scanner
 version: 1.0.0
 description: >
-  Scans a repo root, detects runtime, entry point, and run command.
-  Outputs structured JSON for the host environment to consume.
+  Scan orchestrator. Coordinates repository analysis by delegating to
+  framework-detector for runtime detection and deep-scan-agent for
+  full codebase analysis. Assembles outputs into a single JSON result.
 
 model:
   preferred: "anthropic:claude-sonnet-4-5-20250514"
@@ -12,3 +13,18 @@ model:
 tools: [file-read, shell-exec]
 
 skills: [detect-runtime]
+
+sub_agents:
+  - name: framework-detector
+    path: agents/framework-detector
+    phase: 1
+    description: "Manifest reading and runtime/framework detection. Low LLM cost."
+
+  - name: deep-scan-agent
+    path: agents/deep-scan-agent
+    phase: 2
+    description: "Deep directory traversal and architecture summarization. Standard LLM cost."
+
+delegation:
+  mode: sequential
+  order: [framework-detector, deep-scan-agent]

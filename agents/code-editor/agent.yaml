@@ -2,8 +2,9 @@ spec_version: "0.1.0"
 name: code-editor
 version: 1.0.0
 description: >
-  Applies natural language edit instructions to files in a repo.
-  Read → diff → confirm → write.
+  Code editing orchestrator. Receives tiered edit instructions and
+  delegates to the appropriate sub-agent (jnr-developer, snr-developer,
+  or architect) based on the intent-router's complexity assessment.
 
 model:
   preferred: "anthropic:claude-sonnet-4-5-20250514"
@@ -12,3 +13,23 @@ model:
 tools: [file-read, file-write]
 
 skills: [apply-edit]
+
+sub_agents:
+  - name: jnr-developer
+    path: agents/jnr-developer
+    tier: jnr
+    description: "Small, single-file edits. Low LLM cost."
+
+  - name: snr-developer
+    path: agents/snr-developer
+    tier: snr
+    description: "Multi-file features and refactors. Standard LLM cost."
+
+  - name: architect
+    path: agents/architect
+    tier: architect
+    description: "System architecture changes and deep debugging. High LLM cost."
+
+delegation:
+  mode: tier_based
+  source: intent-router

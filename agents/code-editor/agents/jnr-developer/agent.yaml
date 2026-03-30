@@ -1,0 +1,15 @@
+spec_version: "0.1.0"
+name: jnr-developer
+version: 1.0.0
+description: >
+  Junior developer sub-agent. Handles small, isolated, single-file edits
+  such as styling tweaks, typo fixes, and minor config changes.
+  Optimized for low LLM cost using small/flash models.
+
+model:
+  preferred: "google:gemini-2.0-flash"
+  fallback: ["openai:gpt-4o-mini"]
+
+tools: [file-read, file-write]
+
+skills: [apply-edit]
